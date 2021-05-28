@@ -1,0 +1,19 @@
+---
+# tasks file for ./cat_tomcat_docke
+  - name: Re-create docker container for tomcat
+    docker_container:
+      name: capstone-tomcat-docker_container
+      image: tomcat:8
+      state: present
+      recreate: yes
+      published_ports:
+        - "8989:8080"
+
+  - name: Re-start the docker container
+    docker_container:
+      name: capstone-tomcat-docker_container
+      state: started
+      restart: yes
+  - name: Copy war file from work directory to docker tomcat server
+    shell: docker cp /home/cicd/Cap_GiftShop/workdir/dockswarm/dockimage/GiftShop.war capstone-tomcat-docker_container:usr/local/tomcat/webapps
+
